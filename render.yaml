@@ -1,0 +1,26 @@
+services:
+  - type: web
+    name: ecommerce-backend
+    env: docker
+    rootDir: ecommercebackend
+    plan: free
+    envVars:
+      - key: SPRING_DATASOURCE_URL
+        fromDatabase: ecommerce-db
+      - key: SPRING_DATASOURCE_USERNAME
+        fromDatabase: ecommerce-db
+      - key: SPRING_DATASOURCE_PASSWORD
+        fromDatabase: ecommerce-db
+    autoDeploy: true
+
+  - type: web
+    name: ecommerce-frontend
+    env: docker
+    rootDir: ecommerce-frontend
+    plan: free
+    autoDeploy: true
+
+databases:
+  - name: ecommerce-db
+    engine: mysql
+    plan: free
