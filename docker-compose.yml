@@ -1,0 +1,26 @@
+version: "3.8"
+
+services:
+  backend:
+    build: ./ecommercebackend
+    container_name: ecommerce-backend
+    ports:
+      - "8080:8080"
+    env_file:
+      - .env
+    networks:
+      - ecommerce-network
+
+  frontend:
+    build: ./ecommerce-frontend
+    container_name: ecommerce-frontend
+    ports:
+      - "5173:80"
+    depends_on:
+      - backend
+    networks:
+      - ecommerce-network
+
+networks:
+  ecommerce-network:
+    driver: bridge
