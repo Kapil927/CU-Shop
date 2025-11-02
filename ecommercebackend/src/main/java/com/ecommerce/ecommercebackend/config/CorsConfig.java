@@ -6,7 +6,7 @@ import org.springframework.web.servlet.config.annotation.CorsRegistry;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.lang.NonNull; // ✅ Add this import
+import org.springframework.lang.NonNull;
 
 @Configuration
 public class CorsConfig {
@@ -17,22 +17,20 @@ public class CorsConfig {
     public WebMvcConfigurer corsConfigurer() {
         return new WebMvcConfigurer() {
             @Override
-            public void addCorsMappings(@NonNull CorsRegistry registry) { // ✅ Add @NonNull
+            public void addCorsMappings(@NonNull CorsRegistry registry) {
 
                 log.info("🚀 Initializing Global CORS Configuration...");
 
                 registry.addMapping("/**")
                         .allowedOrigins(
-                                "http://localhost:3000",
-                                "https://your-frontend-domain.com"
+                                "http://localhost:5173",
+                                "https://ecommerce-frontend-dmgg.onrender.com"
                         )
-                        .allowedMethods("GET", "POST", "PUT", "DELETE", "OPTIONS")
+                        .allowedMethods("*")
                         .allowedHeaders("*")
-                        .exposedHeaders("Authorization", "Content-Type")
-                        .allowCredentials(true)
-                        .maxAge(3600);
+                        .allowCredentials(true);
 
-                log.info("✅ CORS setup complete. Allowed origins: http://localhost:3000, https://your-frontend-domain.com");
+                log.info("✅ CORS setup complete. Allowed origins: http://localhost:5173, https://ecommerce-frontend-dmgg.onrender.com");
             }
         };
     }
