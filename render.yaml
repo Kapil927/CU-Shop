@@ -6,11 +6,17 @@ services:
     plan: free
     envVars:
       - key: SPRING_DATASOURCE_URL
-        fromDatabase: ecommerce-db
+        valueFromDatabase:
+          name: ecommerce-db
+          property: connectionString
       - key: SPRING_DATASOURCE_USERNAME
-        fromDatabase: ecommerce-db
+        valueFromDatabase:
+          name: ecommerce-db
+          property: username
       - key: SPRING_DATASOURCE_PASSWORD
-        fromDatabase: ecommerce-db
+        valueFromDatabase:
+          name: ecommerce-db
+          property: password
     autoDeploy: true
 
   - type: web
