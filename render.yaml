@@ -5,19 +5,7 @@ services:
     rootDir: ecommercebackend
     plan: free
     autoDeploy: true
-    envVars:
-      - key: SPRING_DATASOURCE_URL
-        valueFromDatabase:
-          name: ecommerce-db
-          property: connectionString
-      - key: SPRING_DATASOURCE_USERNAME
-        valueFromDatabase:
-          name: ecommerce-db
-          property: user
-      - key: SPRING_DATASOURCE_PASSWORD
-        valueFromDatabase:
-          name: ecommerce-db
-          property: password
+    envVars: []
 
   - type: web
     name: ecommerce-frontend
@@ -25,9 +13,3 @@ services:
     rootDir: ecommerce-frontend
     plan: free
     autoDeploy: true
-
-databases:
-  - name: ecommerce-db
-    type: database
-    databaseName: ecommerce
-    plan: free
