@@ -36,24 +36,6 @@ public class SecurityConfig {
                 .orElseThrow(() -> new RuntimeException("User not found: " + username));
     }
 
-    // ✅ Global CORS Configuration (Allow Frontend + Localhost)
-    @Bean
-    public WebMvcConfigurer corsConfigurer() {
-        return new WebMvcConfigurer() {
-            @Override
-            public void addCorsMappings(CorsRegistry registry) {
-                registry.addMapping("/**")
-                        .allowedOrigins(
-                                "https://ecommerce-frontend-dmgg.onrender.com",
-                                "http://localhost:5173"
-                        )
-                        .allowedMethods("GET", "POST", "PUT", "DELETE", "OPTIONS")
-                        .allowedHeaders("*")
-                        .allowCredentials(true);
-            }
-        };
-    }
-
     // ✅ Security Rules
     @Bean
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
