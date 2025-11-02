@@ -23,9 +23,17 @@ public class CorsConfig {
 
                 registry.addMapping("/**")
                         .allowedOrigins(
+                                // ✅ Local Development
                                 "http://localhost:5173",
+
+                                // ✅ Render Frontend (old)
                                 "https://ecommerce-frontend-dmgg.onrender.com",
-                                "https://cu-shop.bytexl.live"  // ✅ your new production frontend
+
+                                // ✅ Your custom production frontend
+                                "https://cu-shop.bytexl.live",
+
+                                // ✅ Your new backend domain on Render
+                                "https://cu-shop.onrender.com"
                         )
                         .allowedMethods("GET", "POST", "PUT", "DELETE", "OPTIONS")
                         .allowedHeaders("*")
@@ -33,7 +41,7 @@ public class CorsConfig {
                         .maxAge(3600);
 
                 log.info("✅ CORS setup complete. Allowed origins: "
-                        + "localhost:5173, ecommerce-frontend-dmgg.onrender.com, cu-shop.bytexl.live");
+                        + "localhost:5173, ecommerce-frontend-dmgg.onrender.com, cu-shop.bytexl.live, cu-shop.onrender.com");
             }
         };
     }
