@@ -25,13 +25,15 @@ public class CorsConfig {
                         .allowedOrigins(
                                 "http://localhost:5173",
                                 "https://ecommerce-frontend-dmgg.onrender.com",
-                                "https://cu-shop.bytexl.live"
+                                "https://cu-shop.bytexl.live"  // ✅ your new production frontend
                         )
-                        .allowedMethods("*")
+                        .allowedMethods("GET", "POST", "PUT", "DELETE", "OPTIONS")
                         .allowedHeaders("*")
-                        .allowCredentials(true);
+                        .allowCredentials(true)
+                        .maxAge(3600);
 
-                log.info("✅ CORS setup complete. Allowed origins: http://localhost:5173, https://ecommerce-frontend-dmgg.onrender.com");
+                log.info("✅ CORS setup complete. Allowed origins: "
+                        + "localhost:5173, ecommerce-frontend-dmgg.onrender.com, cu-shop.bytexl.live");
             }
         };
     }
