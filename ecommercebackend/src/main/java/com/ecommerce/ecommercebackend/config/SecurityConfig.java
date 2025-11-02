@@ -10,8 +10,6 @@ import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
-import org.springframework.web.servlet.config.annotation.CorsRegistry;
-import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 
 @Configuration
 @RequiredArgsConstructor
@@ -24,7 +22,6 @@ public class SecurityConfig {
         return new BCryptPasswordEncoder();
     }
 
-    // ✅ Load user details from DB
     @Bean
     public UserDetailsService userDetailsService() {
         return username -> userRepository.findByUsername(username)
@@ -36,15 +33,17 @@ public class SecurityConfig {
                 .orElseThrow(() -> new RuntimeException("User not found: " + username));
     }
 
-    // ✅ Security Rules
     @Bean
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
         http
+            // ✅ Enable the global CORS configuration (from CorsConfig.java)
             .cors(Customizer.withDefaults())
+            // ✅ Disable CSRF for simplicity in REST APIs
             .csrf(csrf -> csrf.disable())
 
+            // ✅ Authorization rules
             .authorizeHttpRequests(auth -> auth
-                // 🌍 Public routes (no login needed)
+                // Public APIs
                 .requestMatchers(
                     "/api/products/**",
                     "/api/reviews/**",
@@ -57,14 +56,14 @@ public class SecurityConfig {
                     "/h2-console/**"
                 ).permitAll()
 
-                // 🔐 Admin routes
+                // Admin-only APIs
                 .requestMatchers("/api/admin/**").hasRole("ADMIN")
 
-                // 🔒 User routes (must login)
+                // Everything else = user must be logged in
                 .anyRequest().authenticated()
             )
 
-            // ✅ Login setup (Form-based)
+            // ✅ Form login endpoints
             .formLogin(form -> form
                 .loginProcessingUrl("/api/auth/login")
                 .successHandler((req, res, auth) -> res.setStatus(200))
@@ -72,13 +71,13 @@ public class SecurityConfig {
                 .permitAll()
             )
 
-            // ✅ Logout setup
+            // ✅ Logout endpoint
             .logout(logout -> logout
                 .logoutUrl("/api/auth/logout")
                 .logoutSuccessHandler((req, res, auth) -> res.setStatus(200))
             )
 
-            // ✅ Session Management
+            // ✅ Session management
             .sessionManagement(session -> session
                 .maximumSessions(1)
                 .maxSessionsPreventsLogin(false)
@@ -86,7 +85,9 @@ public class SecurityConfig {
                 .sessionFixation().migrateSession()
             );
 
+        // ✅ Allow frames for H2/Swagger
         http.headers(headers -> headers.frameOptions(frame -> frame.disable()));
+
         return http.build();
     }
 }
